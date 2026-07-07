@@ -1,0 +1,746 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Acu-Therapy Wear - Futuristic Healthcare IoT Console</title>
+    <!-- CSS Stylesheet -->
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- 1. LOADING OVERLAY (Biosensor Calibration) -->
+    <div id="loader-overlay">
+        <div class="loader-container">
+            <div class="loader-ring"></div>
+            <div class="loader-logo">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M22 12h-4l-3 9L9 3l-3 9H2"/>
+                </svg>
+            </div>
+            <div class="loader-text">CALIBRATING SYSTEM...</div>
+            <div class="loader-subtext">Initializing biosensors and network interfaces</div>
+        </div>
+    </div>
+    <!-- 2. REAL-TIME NOTIFICATIONS TOASTS -->
+    <div id="notification-container"></div>
+    <!-- 3. MAIN APPLICATION CONTAINER -->
+    <div id="app-container">
+        <!-- ==========================================
+             AUTHENTICATION SCREEN (Login Portal)
+             ========================================== -->
+        <div id="login-screen" class="screen active">
+            <div class="login-bg-grid"></div>
+            
+            <div class="login-container">
+                <div class="login-header-logo">
+                    <div class="logo-glow-wrapper">
+                        <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M12 2L2 7L12 12L22 7L12 2Z"/>
+                            <path d="M2 17L12 22L22 17"/>
+                            <path d="M2 12L12 17L22 12"/>
+                        </svg>
+                    </div>
+                </div>
+                
+                <div class="login-card glass-panel">
+                    <div class="login-title-group">
+                        <h2>Acu-Therapy Wear</h2>
+                        <p>Smart Acupressure Therapy System</p>
+                    </div>
+                    
+                    <form id="login-form" novalidate>
+                        <div class="form-group">
+                            <label for="username">Username</label>
+                            <div class="input-wrapper">
+                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+                                    <circle cx="12" cy="7" r="4"/>
+                                </svg>
+                                <input type="text" id="username" class="form-control" placeholder="Acu-Therapy" required autocomplete="off">
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="password">Passcode</label>
+                            <div class="input-wrapper">
+                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <rect x="3" y="11" width="18" height="11" rx="2" ry="2"/>
+                                    <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
+                                </svg>
+                                <input type="password" id="password" class="form-control" placeholder="••••" required>
+                            </div>
+                        </div>
+                        
+                        <div id="login-error" class="error-message hide">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/>
+                            </svg>
+                            <span>Access Denied. Check credentials and retry.</span>
+                        </div>
+                        
+                        <button type="submit" class="btn btn-primary" id="login-submit-btn">
+                            <span>Login</span>
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/>
+                            </svg>
+                        </button>
+                    </form>
+                    
+                    <div class="demo-credentials">
+                        <p>Demo Keycard: <strong>Acu-Therapy</strong> / Passcode: <strong>1234</strong></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- ==========================================
+             DASHBOARD SCREEN (Main Control Hub)
+             ========================================== -->
+        <div id="dashboard-screen" class="screen">
+            
+            <!-- Collapsible Sidebar Navigation -->
+            <aside class="sidebar" id="app-sidebar">
+                <div class="sidebar-header">
+                    <div class="sidebar-logo">
+                        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M12 2L2 7L12 12L22 7L12 2Z"/>
+                            <path d="M2 17L12 22L22 17"/>
+                            <path d="M2 12L12 17L22 12"/>
+                        </svg>
+                    </div>
+                    <span class="brand-text">Acu-Therapy</span>
+                </div>
+                
+                <nav class="sidebar-nav">
+                    <div class="nav-link active" data-target="view-home" id="nav-home">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
+                            <polyline points="9 22 9 12 15 12 15 22"/>
+                        </svg>
+                        <span class="nav-text">Home Dashboard</span>
+                    </div>
+                    
+                    <div class="nav-link" data-target="view-modes" id="nav-modes">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <rect x="3" y="3" width="7" height="7"/>
+                            <rect x="14" y="3" width="7" height="7"/>
+                            <rect x="14" y="14" width="7" height="7"/>
+                            <rect x="3" y="14" width="7" height="7"/>
+                        </svg>
+                        <span class="nav-text">Therapy Modes</span>
+                    </div>
+                    
+                    <div class="nav-link" data-target="view-history" id="nav-history">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+                            <polyline points="14 2 14 8 20 8"/>
+                            <line x1="16" y1="13" x2="8" y2="13"/>
+                            <line x1="16" y1="17" x2="8" y2="17"/>
+                            <polyline points="10 9 9 9 8 9"/>
+                        </svg>
+                        <span class="nav-text">Session History</span>
+                    </div>
+                    
+                    <div class="nav-link" data-target="view-settings" id="nav-settings">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <circle cx="12" cy="12" r="3"/>
+                            <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/>
+                        </svg>
+                        <span class="nav-text">Settings</span>
+                    </div>
+                </nav>
+                
+                <div class="sidebar-footer">
+                    <div class="nav-link" id="sidebar-logout-btn">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/>
+                            <polyline points="16 17 21 12 16 7"/>
+                            <line x1="21" y1="12" x2="9" y2="12"/>
+                        </svg>
+                        <span class="nav-text">Logout</span>
+                    </div>
+                </div>
+            </aside>
+            
+            <!-- Main Content Panel -->
+            <main class="main-content">
+                
+                <!-- Top Navigation Bar -->
+                <header class="app-header">
+                    <div class="header-left">
+                        <button class="toggle-sidebar-btn" id="sidebar-toggle" title="Toggle Navigation Menu">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <line x1="3" y1="12" x2="21" y2="12"/>
+                                <line x1="3" y1="6" x2="21" y2="6"/>
+                                <line x1="3" y1="18" x2="21" y2="18"/>
+                            </svg>
+                        </button>
+                        <h1 class="page-title" id="current-view-title">Home Dashboard</h1>
+                    </div>
+                    
+                    <div class="header-right">
+                        <!-- Clock Widget -->
+                        <div class="clock-widget">
+                            <span class="clock-time" id="live-clock">00:00:00 AM</span>
+                            <span class="clock-date" id="live-date">July 7, 2026</span>
+                        </div>
+                        
+                        <!-- System Status -->
+                        <div class="system-status">
+                            <span class="status-indicator-dot"></span>
+                            <span class="status-text" id="jacket-connection-status">Connected</span>
+                        </div>
+                        
+                        <!-- Profile Avatar -->
+                        <div class="user-profile-badge">
+                            <div class="profile-avatar" id="avatar-letters">AT</div>
+                        </div>
+                    </div>
+                </header>
+                
+                <!-- ==========================================
+                     TAB VIEW 1: HOME DASHBOARD
+                     ========================================== -->
+                <section class="app-view active-view" id="view-home">
+                    <div class="dashboard-grid">
+                        
+                        <!-- Left Main Panel: Mode Selector -->
+                        <div class="dashboard-main-panel">
+                            <div class="panel-header">
+                                <h3>Modes Selection</h3>
+                                <p>Select your preferred mode below</p>
+                            </div>
+                            
+                            <!-- 5 Mode Cards List -->
+                            <div class="modes-grid">
+                                
+                                <!-- Card 1: Stress -->
+                                <div class="mode-card glass-panel" id="card-stress" data-mode="stress">
+                                    <div class="card-details">
+                                        <div class="card-icon-wrapper">
+                                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                                <path d="M22 12h-4l-3 9L9 3l-3 9H2"/>
+                                            </svg>
+                                        </div>
+                                        <div class="card-text">
+                                            <h4>Stress Relief</h4>
+                                            <p>Gentle pulsating rhythms to reduce cortisol and muscle tension.</p>
+                                            <span class="card-meta-info">Target: Shoulders & Upper Back</span>
+                                        </div>
+                                    </div>
+                                    <div class="card-action-group">
+                                        <div class="session-indicator" id="indicator-stress">
+                                            <span class="indicator-dot"></span>
+                                        </div>
+                                        <button class="btn-card-start" data-mode="stress">View Details</button>
+                                    </div>
+                                </div>
+                                
+                                <!-- Card 2: Back Pain -->
+                                <div class="mode-card glass-panel" id="card-back" data-mode="back">
+                                    <div class="card-details">
+                                        <div class="card-icon-wrapper">
+                                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                                <path d="M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.38-.5-2-1-3-1.072-2.143-.224-4.054 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 1 1-14 0c0-1.153.433-2.294 1-3a2.5 2.5 0 0 0 2.5 2.5z"/>
+                                            </svg>
+                                        </div>
+                                        <div class="card-text">
+                                            <h4>Backpain Relief</h4>
+                                            <p>Deep bio-stimulation targeting lower lumbar nodes to ease chronic soreness.</p>
+                                            <span class="card-meta-info">Target: Lower Back Grid</span>
+                                        </div>
+                                    </div>
+                                    <div class="card-action-group">
+                                        <div class="session-indicator" id="indicator-back">
+                                            <span class="indicator-dot"></span>
+                                        </div>
+                                        <button class="btn-card-start" data-mode="back">View Details</button>
+                                    </div>
+                                </div>
+                                
+                                <!-- Card 3: Neck Pain -->
+                                <div class="mode-card glass-panel" id="card-neck" data-mode="neck">
+                                    <div class="card-details">
+                                        <div class="card-icon-wrapper">
+                                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                                <circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/>
+                                            </svg>
+                                        </div>
+                                        <div class="card-text">
+                                            <h4>Neck Therapy</h4>
+                                            <p>High-frequency focal pulses on cervical vertebrae zones.</p>
+                                            <span class="card-meta-info">Target: Upper Collar</span>
+                                        </div>
+                                    </div>
+                                    <div class="card-action-group">
+                                        <div class="session-indicator" id="indicator-neck">
+                                            <span class="indicator-dot"></span>
+                                        </div>
+                                        <button class="btn-card-start" data-mode="neck">View Details</button>
+                                    </div>
+                                </div>
+                                
+                                <!-- Card 4: Relax -->
+                                <div class="mode-card glass-panel" id="card-relax" data-mode="relax">
+                                    <div class="card-details">
+                                        <div class="card-icon-wrapper">
+                                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                                <circle cx="12" cy="12" r="10"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/>
+                                            </svg>
+                                        </div>
+                                        <div class="card-text">
+                                            <h4>Deep Relax</h4>
+                                            <p>Wave-like ripples across all active channels to calm the nervous system.</p>
+                                            <span class="card-meta-info">Target: Complete Torso Grid</span>
+                                        </div>
+                                    </div>
+                                    <div class="card-action-group">
+                                        <div class="session-indicator" id="indicator-relax">
+                                            <span class="indicator-dot"></span>
+                                        </div>
+                                        <button class="btn-card-start" data-mode="relax">View Details</button>
+                                    </div>
+                                </div>
+                                
+                                <!-- Card 5: Sleep -->
+                                <div class="mode-card glass-panel" id="card-sleep" data-mode="sleep">
+                                    <div class="card-details">
+                                        <div class="card-icon-wrapper">
+                                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                                <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+                                            </svg>
+                                        </div>
+                                        <div class="card-text">
+                                            <h4>Sleep Induction</h4>
+                                            <p>Low-frequency, steady pressure waves mimicking somatic sleep preparation cycles.</p>
+                                            <span class="card-meta-info">Target: Upper Collar & Lumbar Grid</span>
+                                        </div>
+                                    </div>
+                                    <div class="card-action-group">
+                                        <div class="session-indicator" id="indicator-sleep">
+                                            <span class="indicator-dot"></span>
+                                        </div>
+                                        <button class="btn-card-start" data-mode="sleep">View Details</button>
+                                    </div>
+                                </div>
+                                
+                            </div>
+                        </div>
+                        
+
+                    </div>
+                </section>
+                <!-- ==========================================
+                     TAB VIEW 2: MANUAL THERAPY MODES
+                     ========================================== -->
+                <section class="app-view" id="view-modes">
+                    <div class="modes-detailed-container">
+                        
+                        <!-- Manual Nodes Checklist Panel -->
+                        <div class="manual-grid-panel glass-panel">
+                            <div class="panel-header">
+                                <h3>Node Grid Control Map</h3>
+                                <p>Manually adjust individual node connectivity</p>
+                            </div>
+                            
+                            <div class="grid-map-container">
+                                <div class="grid-map-row">
+                                    <div>
+                                        <strong>Cervical Node 1 (C1)</strong>
+                                        <div class="node-tag">Neck Target</div>
+                                    </div>
+                                    <label class="node-trigger-toggle">
+                                        <input type="checkbox" id="toggle-node-neck" data-node="node-neck">
+                                        <span class="toggle-slider"></span>
+                                    </label>
+                                </div>
+                                <div class="grid-map-row">
+                                    <div>
+                                        <strong>Left Shoulder Node (S1)</strong>
+                                        <div class="node-tag">Shoulder Left Target</div>
+                                    </div>
+                                    <label class="node-trigger-toggle">
+                                        <input type="checkbox" id="toggle-node-shoulder-left" data-node="node-shoulder-left">
+                                        <span class="toggle-slider"></span>
+                                    </label>
+                                </div>
+                                <div class="grid-map-row">
+                                    <div>
+                                        <strong>Right Shoulder Node (S2)</strong>
+                                        <div class="node-tag">Shoulder Right Target</div>
+                                    </div>
+                                    <label class="node-trigger-toggle">
+                                        <input type="checkbox" id="toggle-node-shoulder-right" data-node="node-shoulder-right">
+                                        <span class="toggle-slider"></span>
+                                    </label>
+                                </div>
+                                <div class="grid-map-row">
+                                    <div>
+                                        <strong>Thoracic Node Left (T1)</strong>
+                                        <div class="node-tag">Mid Back Left</div>
+                                    </div>
+                                    <label class="node-trigger-toggle">
+                                        <input type="checkbox" id="toggle-node-back-upper-left" data-node="node-back-upper-left">
+                                        <span class="toggle-slider"></span>
+                                    </label>
+                                </div>
+                                <div class="grid-map-row">
+                                    <div>
+                                        <strong>Thoracic Node Right (T2)</strong>
+                                        <div class="node-tag">Mid Back Right</div>
+                                    </div>
+                                    <label class="node-trigger-toggle">
+                                        <input type="checkbox" id="toggle-node-back-upper-right" data-node="node-back-upper-right">
+                                        <span class="toggle-slider"></span>
+                                    </label>
+                                </div>
+                                <div class="grid-map-row">
+                                    <div>
+                                        <strong>Lumbar Node Left (L1)</strong>
+                                        <div class="node-tag">Lower Back Left</div>
+                                    </div>
+                                    <label class="node-trigger-toggle">
+                                        <input type="checkbox" id="toggle-node-back-lower-left" data-node="node-back-lower-left">
+                                        <span class="toggle-slider"></span>
+                                    </label>
+                                </div>
+                                <div class="grid-map-row">
+                                    <div>
+                                        <strong>Lumbar Node Right (L2)</strong>
+                                        <div class="node-tag">Lower Back Right</div>
+                                    </div>
+                                    <label class="node-trigger-toggle">
+                                        <input type="checkbox" id="toggle-node-back-lower-right" data-node="node-back-lower-right">
+                                        <span class="toggle-slider"></span>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Stimulation Overview Box -->
+                        <div class="mode-overview-box glass-panel">
+                            <div class="panel-header">
+                                <h3>Active Pulse Biosensor Readings</h3>
+                                <p>Calibration feedback from connected jacket nodes</p>
+                            </div>
+                            
+                            <div class="overview-card-info">
+                                <div class="info-bullet"></div>
+                                <div class="info-txt">
+                                    <h5>Micro-Current Frequency</h5>
+                                    <p id="biometric-freq">Dynamic sweep: 15Hz - 45Hz (calibrated)</p>
+                                </div>
+                            </div>
+                            
+                            <div class="overview-card-info">
+                                <div class="info-bullet" style="background: var(--color-success)"></div>
+                                <div class="info-txt">
+                                    <h5>GSR Biofeedback Level</h5>
+                                    <p>Skin conductivity: 8.4 µS (optimal calibration)</p>
+                                </div>
+                            </div>
+                            
+                            <div class="overview-card-info">
+                                <div class="info-bullet" style="background: var(--color-warning)"></div>
+                                <div class="info-txt">
+                                    <h5>Thermal Heating Nodes</h5>
+                                    <p id="biometric-temp">Grid temperature: 38.5°C (steady state)</p>
+                                </div>
+                            </div>
+                            
+                            <div class="overview-card-info">
+                                <div class="info-bullet" style="background: var(--color-secondary)"></div>
+                                <div class="info-txt">
+                                    <h5>Smart Vest Battery Level</h5>
+                                    <p>Charge remaining: 89% (approx. 4.5 hours run-time)</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+                <!-- ==========================================
+                     TAB VIEW 3: SESSION HISTORY
+                     ========================================== -->
+                <section class="app-view" id="view-history">
+                    <div class="history-view-container">
+                        
+                        <!-- Table Filters Card -->
+                        <div class="table-controls-panel glass-panel">
+                            <div class="controls-left">
+                                <!-- Search bar -->
+                                <div class="search-box">
+                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
+                                    </svg>
+                                    <input type="text" id="history-search" class="search-input" placeholder="Search sessions by mode or intensity...">
+                                </div>
+                                
+                                <!-- Mode Filter -->
+                                <select id="filter-mode" class="filter-select">
+                                    <option value="all">All Modes</option>
+                                    <option value="Stress Relief">Stress Relief</option>
+                                    <option value="Backpain Relief">Backpain Relief</option>
+                                    <option value="Neck Therapy">Neck Therapy</option>
+                                    <option value="Deep Relax">Deep Relax</option>
+                                    <option value="Sleep Induction">Sleep Induction</option>
+                                </select>
+                                
+                                <!-- Intensity Filter -->
+                                <select id="filter-intensity" class="filter-select">
+                                    <option value="all">All Intensities</option>
+                                    <option value="low">Low</option>
+                                    <option value="medium">Medium</option>
+                                    <option value="high">High</option>
+                                    <option value="maximum">Maximum</option>
+                                </select>
+                            </div>
+                            
+                            <div class="controls-right">
+                                <!-- Export to CSV -->
+                                <button class="btn btn-outline btn-control-action" id="btn-export-csv" title="Download spreadsheet of logs">
+                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/>
+                                    </svg>
+                                    <span>Export CSV</span>
+                                </button>
+                                
+                                <!-- Clear All -->
+                                <button class="btn btn-danger-outline btn-control-action" id="btn-clear-history" title="Purge database local history">
+                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/><line x1="10" y1="11" x2="10" y2="17"/><line x1="14" y1="11" x2="14" y2="17"/>
+                                    </svg>
+                                    <span>Clear All</span>
+                                </button>
+                            </div>
+                        </div>
+                        
+                        <!-- Logs Table Panel -->
+                        <div class="history-table-container glass-panel">
+                            <table class="history-table" id="history-table-el">
+                                <thead>
+                                    <tr>
+                                        <th>Date &amp; Time</th>
+                                        <th>Therapy Program</th>
+                                        <th>Duration</th>
+                                        <th>Intensity</th>
+                                        <th>Session Status</th>
+                                        <th style="text-align: center;">Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="history-tbody">
+                                    <!-- Dynamic content added in app.js -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </section>
+                <!-- ==========================================
+                     TAB VIEW 4: SYSTEM SETTINGS
+                     ========================================== -->
+                <section class="app-view" id="view-settings">
+                    <div class="settings-layout">
+                        
+                        <!-- Left Settings List -->
+                        <div class="settings-panel glass-panel">
+                            
+                            <!-- Group 1: General Customizations -->
+                            <div class="settings-group">
+                                <h4 class="settings-group-title">UI Adjustments</h4>
+                                
+                                <div class="setting-row">
+                                    <div class="setting-info">
+                                        <h5>Light / Dark Mode</h5>
+                                        <p>Toggle high-contrast light stylesheet parameters</p>
+                                    </div>
+                                    <button class="theme-switch-btn" id="btn-toggle-theme">
+                                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                            <circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>
+                                        </svg>
+                                        <span id="theme-toggle-text">Dark Theme</span>
+                                    </button>
+                                </div>
+                            </div>
+                            
+                            <!-- Group 2: IoT Hardware Feedback -->
+                            <div class="settings-group">
+                                <h4 class="settings-group-title">IoT Feedback Channels</h4>
+                                
+                                <!-- Audio synthesis -->
+                                <div class="setting-row">
+                                    <div class="setting-info">
+                                        <h5>Audio Synthesizer Effects</h5>
+                                        <p>Simulate clinical acoustic feedback sweeps using Web Audio API</p>
+                                    </div>
+                                    <label class="slider-toggle">
+                                        <input type="checkbox" id="toggle-settings-sound" checked>
+                                        <span class="toggle-switch-slider"></span>
+                                    </label>
+                                </div>
+                                
+                                <!-- Notifications -->
+                                <div class="setting-row">
+                                    <div class="setting-info">
+                                        <h5>Real-time UI Notifications</h5>
+                                        <p>Show sliding status updates and system alerts</p>
+                                    </div>
+                                    <label class="slider-toggle">
+                                        <input type="checkbox" id="toggle-settings-notifications" checked>
+                                        <span class="toggle-switch-slider"></span>
+                                    </label>
+                                </div>
+                                
+                                <!-- Animations Toggle -->
+                                <div class="setting-row">
+                                    <div class="setting-info">
+                                        <h5>Micro-animations &amp; Visual Wires</h5>
+                                        <p>Render jacket SVG node pulse and connection wire flow tracks</p>
+                                    </div>
+                                    <label class="slider-toggle">
+                                        <input type="checkbox" id="toggle-settings-animations" checked>
+                                        <span class="toggle-switch-slider"></span>
+                                    </label>
+                                </div>
+                            </div>
+                            
+                            <!-- Group 3: Memory Reset -->
+                            <div class="settings-group">
+                                <h4 class="settings-group-title">System Purge</h4>
+                                <div class="setting-row">
+                                    <div class="setting-info">
+                                        <h5>Factory Reset Application</h5>
+                                        <p>Deletes session history, clears local storage state, and logs out user</p>
+                                    </div>
+                                    <button class="btn btn-danger-outline btn-reset-app" id="btn-factory-reset">Factory Reset</button>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Right Panel Settings Info -->
+                        <div class="settings-info-panel">
+                            
+                            <!-- Developer Card -->
+                            <div class="dev-profile-card glass-panel">
+                                <div class="profile-avatar-large">AT</div>
+                                <h4 class="dev-name">Professional Developer</h4>
+                                <p class="dev-role">Healthcare IoT Architect</p>
+                                <p class="dev-bio">Designing next-generation bio-stimulation software, interactive medical graphics, and smart wearables dashboard interfaces.</p>
+                            </div>
+                            
+                            <!-- Project Info Card -->
+                            <div class="project-details-card glass-panel">
+                                <h4>System Information</h4>
+                                <div class="detail-row">
+                                    <span class="detail-label">Application Version</span>
+                                    <span class="detail-value">v2.4.0 (Commercial Build)</span>
+                                </div>
+                                <div class="detail-row">
+                                    <span class="detail-label">Wearable Target</span>
+                                    <span class="detail-value">Acu-Jacket Pro 3D Vest</span>
+                                </div>
+                                <div class="detail-row">
+                                    <span class="detail-label">Firmware Interface</span>
+                                    <span class="detail-value">Bluetooth Smart Mesh API v4.1</span>
+                                </div>
+                                <div class="detail-row">
+                                    <span class="detail-label">Active Host Platform</span>
+                                    <span class="detail-value">WebBrowser Host Standalone</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+                
+            </main>
+        </div>
+    </div>
+    <!-- ==========================================
+         SESSION CONTROL MODAL (Premium Dial Screen)
+         ========================================== -->
+    <div id="therapy-modal" class="modal-overlay">
+        <div class="modal-panel glass-panel">
+            <button class="modal-close-btn" id="modal-close-btn" title="Close Control Console">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
+                </svg>
+            </button>
+            
+            <div class="modal-header">
+                <div class="modal-header-icon" id="modal-title-icon">
+                    <!-- Dynamic SVG icon from app.js -->
+                </div>
+                <h3 id="modal-title">Stress Relief</h3>
+                <p id="modal-subtitle">Zone: Shoulders &amp; Chest</p>
+            </div>
+            
+            <!-- Circular Radial Countdown Dial -->
+            <div class="radial-timer-container">
+                <svg class="timer-svg" viewBox="0 0 200 200">
+                    <circle class="timer-bg-circle" cx="100" cy="100" r="90" />
+                    <circle class="timer-progress-circle" id="timer-progress-circle" cx="100" cy="100" r="90" />
+                </svg>
+                <div class="timer-info-text">
+                    <span class="timer-countdown" id="modal-timer-countdown">15:00</span>
+                    <div class="timer-status-text" id="modal-timer-status">Idle</div>
+                </div>
+            </div>
+            
+            <!-- Parameters control (Duration, Intensity) -->
+            <div class="modal-parameter-controls">
+                
+                <!-- Duration slider -->
+                <div class="slider-container">
+                    <div class="slider-header">
+                        <span>Session Duration</span>
+                        <span><strong id="label-slider-duration">15</strong> mins</span>
+                    </div>
+                    <input type="range" id="input-session-duration" class="input-slider" min="1" max="20" value="15">
+                </div>
+                
+                <!-- Intensity buttons -->
+                <div class="slider-container">
+                    <div class="slider-header">
+                        <span>Acupressure Intensity</span>
+                        <span><strong id="label-intensity-level">Medium</strong></span>
+                    </div>
+                    <div class="intensity-pill-container">
+                        <button class="intensity-pill" data-level="Low">Low</button>
+                        <button class="intensity-pill active" data-level="Medium">Medium</button>
+                        <button class="intensity-pill" data-level="High">High</button>
+                        <button class="intensity-pill" data-level="Maximum">Maximum</button>
+                    </div>
+                </div>
+                
+            </div>
+            
+            <!-- Actions buttons grid -->
+            <div class="modal-actions-grid">
+                <button class="btn btn-primary btn-modal-action" id="btn-modal-start">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <polygon points="5 3 19 12 5 21 5 3"/>
+                    </svg>
+                    <span>Start Session</span>
+                </button>
+                <button class="btn btn-warning btn-modal-action hide" id="btn-modal-pause" style="color: #000;">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <rect x="6" y="4" width="4" height="16"/><rect x="14" y="4" width="4" height="16"/>
+                    </svg>
+                    <span>Pause</span>
+                </button>
+                <button class="btn btn-primary btn-modal-action hide" id="btn-modal-resume">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <polygon points="5 3 19 12 5 21 5 3"/>
+                    </svg>
+                    <span>Resume</span>
+                </button>
+                <button class="btn btn-danger-outline btn-modal-action" id="btn-modal-stop" disabled>
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <rect x="4" y="4" width="16" height="16"/>
+                    </svg>
+                    <span>Stop</span>
+                </button>
+            </div>
+        </div>
+    </div>
+    <!-- JS Logic Script -->
+    <script src="App.js?v=2"></script>
+</body>
+</html>
