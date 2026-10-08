@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Dashboard | Jacket Control</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <div class="blob blob-1"></div>
+    <div class="container">
+        <header class="header">
+            <h2>Command Central</h2>
+            <div style="background: rgba(255,255,255,0.05); padding: 10px 20px; border-radius: 30px;">
+                <small>IP:</small> 
+                <input type="text" id="ip-addr" value="192.168.4.1" 
+                style="background:none; border:none; color:white; width: 100px;">
+            </div>
+        </header>
+
+        <section class="therapy-grid">
+            <a href="therapy.html?mode=stress" class="glass mode-card">
+                <i>🧘</i><h4>Stress</h4><p>Lower Cortisol</p>
+            </a>
+
+            <a href="therapy.html?mode=back" class="glass mode-card">
+                <i>🦴</i><h4>Back Pain</h4><p>Spinal Relief</p>
+            </a>
+
+            <a href="therapy.html?mode=neck" class="glass mode-card">
+                <i>🧠</i><h4>Neck Pain</h4><p>Cervical Care</p>
+            </a>
+
+            <a href="therapy.html?mode=sleep" class="glass mode-card">
+                <i>🌙</i><h4>Sleep</h4><p>Cranial Rhythms</p>
+            </a>
+
+            <a href="therapy.html?mode=relax" class="glass mode-card">
+                <i>✨</i><h4>Relax</h4><p>Full Body</p>
+            </a>
+        </section>
+
+        <div style="display: grid; grid-template-columns: 2fr 1.2fr; gap: 20px;">
+            <div class="glass" style="padding: 25px;">
+                <h3 style="margin-bottom: 20px;">Pain Improvement Trend</h3>
+                <canvas id="painChart" height="150"></canvas>
+            </div>
+            <div class="glass" style="padding: 25px;">
+                <h3 style="margin-bottom: 20px;">Session History</h3>
+                <div id="history-container" class="history-list"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 🔥 ONLY CHANGE HERE -->
+    <script type="module" src="script.js"></script>
+
+</body>
+</html>

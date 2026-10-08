@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Active Therapy | Jacket Control</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body id="t-body">
+    <div class="blob blob-1"></div>
+    <div class="blob blob-2"></div>
+    <div class="container">
+        <header class="header">
+            <a href="dashboard.html" style="color:white; text-decoration:none;">⟵ BACK</a>
+            <h2 id="m-title">THERAPY</h2>
+            <div id="status" style="font-size: 0.7rem; background: #22c55e; color: #000; padding: 4px 10px; border-radius: 20px; font-weight: 800;">CONNECTED</div>
+        </header>
+
+        <div class="orb-container">
+            <div class="orb" id="the-orb">
+                <svg class="progress-ring" width="300" height="300">
+                    <circle class="progress-ring__circle-bg" stroke-width="8" fill="transparent" r="140" cx="150" cy="150"/>
+                    <circle id="progress-bar" class="progress-ring__circle" stroke-width="8" stroke-dasharray="880" stroke-dashoffset="880" fill="transparent" r="140" cx="150" cy="150"/>
+                </svg>
+                <div class="timer-content" style="text-align: center;">
+                    <span style="opacity: 0.5; font-size: 0.7rem; letter-spacing: 2px;">REMAINING</span>
+                    <div class="timer-display" id="timer-txt">10:00</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="control-panel">
+            <div class="glass panel-card">
+                <div style="display:flex; justify-content:space-between;">
+                    <label>INTENSITY</label>
+                    <b id="int-label">30%</b>
+                </div>
+                <input type="range" id="int-slider" min="10" max="100" value="30">
+
+                <hr style="opacity: 0.1; margin: 15px 0;">
+
+                <label>POST-SESSION PAIN (0-10)</label>
+                <input type="number" id="pain-inp" value="2"
+                style="background:none; border: 1px solid var(--border); color:white; padding: 8px; border-radius: 8px; width: 60px; margin-top: 10px;">
+            </div>
+
+            <div class="glass panel-card">
+                <label>PAIN HISTORY</label>
+                <canvas id="painChart" height="220"></canvas>
+            </div> 
+
+            <div class="glass panel-card">
+                <label>DURATION</label>
+                <div class="chip-group">
+                    <button class="chip active" data-s="600">10m</button>
+                    <button class="chip" data-s="900">15m</button>
+                    <button class="chip" data-s="1200">20m</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="action-btns">
+            <button class="btn-action btn-start" id="start-btn">BEGIN THERAPY</button>
+            <button class="btn-action btn-stop" id="stop-btn">STOP</button>
+        </div>
+    </div>
+
+    <!-- 🔥 ONLY CHANGE HERE -->
+    <script type="module" src="script.js"></script>
+
+</body>
+</html>
